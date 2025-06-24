@@ -31,15 +31,18 @@ while true;
 
 	#Print the CPU top 5 processes and Memory top 5 processes
 
-	echo -e '\n''\e[44;36;1mTop Most CPU Usage Processes: \e[m' && top -bn1 -o %CPU | grep -E '[% [0-9]{1,2}[:][0-9]{1,2}[.][0-9]{1,2}*' | head -n 5
-	echo -e '\n''\e[44;36;1mTop Most Memory Usage Processes: \e[m' && top -bn1 -o %MEM | grep -E '[% [0-9]{1,2}[:][0-9]{1,2}[.][0-9]{1,2}*' | head -n 5
+	echo -e '\n''\e[44;36;1mTop Most CPU Usage Processes:\e[m' && top -bn1 -o %CPU | grep -E '[% [0-9]{1,2}[:][0-9]{1,2}[.][0-9]{1,2}*' | head -n 5
+	echo -e '\n''\e[44;36;1mTop Most Memory Usage Processes:\e[m'' ' && top -bn1 -o %MEM | grep -E '[% [0-9]{1,2}[:][0-9]{1,2}[.][0-9]{1,2}*' | head -n 5
 
 	sleep 1
 
 	#Print the Disk %
 
-	echo -e '\n''\e[42;37;1mAll Partitions and Disk Usage: \e[m'
+	echo -e '\n''\e[42;37;1mAll Partitions and Disk Usage:\e[m'
 	df -H
+
+	echo -e -n '\n''\e[42;37;1mOS Information:\e[m'' ' && cat /etc/os-release | head -n 4
+
 	sleep 3
 
 done
