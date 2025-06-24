@@ -18,3 +18,5 @@ Then you can execute by:
   ./server-stats.sh
 
 ### Its a simple Shell Script, made in bash in Ubuntu 24. It's basically for my study in scripting.
+
+### Project idea from: https://roadmap.sh/projects/server-stats
