@@ -2,8 +2,10 @@
 
 CPU_PERCENT="CPU%: "
 
-while true;
-	do
+
+function realtime() {
+
+while true; do
 
 	#The memory in human readable
 
@@ -45,5 +47,44 @@ while true;
 
 	sleep 3
 
-done
+  done
 
+}
+
+while [[ "$1" != "" ]]; do
+    case "$1" in
+        -H | --help )
+            echo "Usage: $0 [-h|--help] [-i|--ip] [-o|--oid>]"
+            echo "  -H, --help  Display this help message."
+            echo "  -c, --cpu    to show cpu use and top process"
+            echo "  -m, --memory   to show memory use and top process"
+            echo "  -R, --realtime   to show general information continuously"
+            exit 0
+            ;;
+        -c | --cpu )
+            shift # Move to the next argument
+            if [[ "$1" == "" ]]; then
+                echo "Invalid oid"
+                exit 1
+            fi
+            peer_to_remove="$1"
+            echo "Input oid peer: $peer_to_remove"
+            ;;
+        -m | --memory )
+            shift # Move to the next argument
+                memory_process
+		memory_use
+                exit 1
+	    ;;
+        -R | --realtime )
+	    shift # Move to the next argument
+		realtime
+		exit 1
+            ;;
+    * ) # Default case for unknown arguments
+            echo "Error: Unknown argument '$1'"
+            exit 1
+            ;;
+    esac
+    shift # Move to the next argument
+done
