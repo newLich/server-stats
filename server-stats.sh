@@ -1,11 +1,11 @@
 #!/bin/bash
 
 
-CPU_PERCENT="CPU%: "
-
 ###################################################################################
 
 				##SCRIPT##
+
+CPU_PERCENT="CPU%: "
 
 #Function general case
 
@@ -57,6 +57,42 @@ while true; do
 
 }
 
+###################################################################################
+
+function memory() {
+
+
+
+	#The memory in human readable
+
+	USED_MEMORY_H=$(free -h | grep 'Mem' | awk '{print $3}')
+	FREE_MEMORY_H=$(free -h | grep 'Mem' | awk '{print $4}')
+
+	#Some variables to get memory in bytes
+
+	declare -i USED_MEMORY=$(free | grep 'Mem' | awk '{print $3}')
+	declare -i FREE_MEMORY=$(free | grep 'Mem' | awk '{print $4}')
+	declare -i TOTAL_MEMORY=$(free | grep 'Mem' | awk '{print $2}')
+
+	#Divide the memory to get the percentage of use
+
+	USED_MEMORY_PERCENT=$(echo "scale=2; $USED_MEMORY / $TOTAL_MEMORY" | bc)
+	FREE_MEMORY_PERCENT=$(echo "scale=2; $FREE_MEMORY / $TOTAL_MEMORY" | bc)
+
+	#Print CPU, Memory Free and Used Memory
+
+	echo -n -e '\e[33;1mUsed Memory: \e[m' &&  echo -n $USED_MEMORY_H " " && echo $USED_MEMORY_PERCENT'% Used' | sed -E 's/.//'
+	echo -n -e '\e[33;1mFree Memory: \e[m' && echo -n $FREE_MEMORY_H " " && echo $FREE_MEMORY_PERCENT'% Free' | sed -E 's/.//'
+
+	sleep 1
+
+	#Print the CPU top 5 processes and Memory top 5 processes
+
+	echo -e '\n''\e[44;36;1mTop Most Memory Usage Processes:\e[m'' ' && top -bn1 -o %MEM | grep -E '[% [0-9]{1,2}[:][0-9]{1,2}[.][0-9]{1,2}*' | head -n 5
+
+}
+
+
 ####################################################################################
 
 
@@ -75,17 +111,11 @@ while [[ "$1" != "" ]]; do
             ;;
         -c | --cpu )
             shift # Move to the next argument
-            if [[ "$1" == "" ]]; then
-                echo "Invalid oid"
-                exit 1
-            fi
-            peer_to_remove="$1"
-            echo "Input oid peer: $peer_to_remove"
+		nome_da_funcao
             ;;
         -m | --memory )
             shift # Move to the next argument
-                memory_process
-		memory_use
+		memory
                 exit 1
 	    ;;
         -R | --realtime )
